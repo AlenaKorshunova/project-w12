@@ -83,8 +83,39 @@ def check_bad_weather(temperature, wind_speed, precipitation_probability, humidi
         return "its too wet outside"
     return "its fine go play outside!!!"
 
+def forecast_one(location_key): # добавила прогноз погоды на 7 день + анализ
+    try:
+        url = f"{BASE_URL}forecasts/v1/daily/5day/{location_key}"
+        params = {"apikey": API_KEY, "metric": "true"}  # Используем метрику (градусы Цельсия)
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        data = response.json()
 
-@app.route('/weather/<float:latitude>/<float:longitude>', methods=['GET'])
+        if not data:
+            return None, "Forecast data not found"
 
-if name == 'main':
-    app.run(debug=True)
+        # Берем только первый день
+        day = data["DailyForecasts"][6]
+        avg_temp = (day["Temperature"]["Minimum"]["Value"] + day["Temperature"]["Maximum"]["Value"]) / 2
+        analysis = weather_analysis({
+            # в прогнозе нет влажности и ветра, добавила среднюю температуру и описание дня и ночи
+            "temperature_celsius": avg_temp,
+            "humidity": None,
+            "wind_speed_kmh": None,
+            "weather_text": day["Day"]["IconPhrase"]
+        })
+        forecast = {
+            "date": day["Date"],
+            "avg_temp": avg_temp,
+            "day_text": day["Day"]["IconPhrase"],
+            "night_text": day["Night"]["IconPhrase"],
+            "analysis": analysis
+        }
+        return forecast, None
+    except requests.RequestException as e:
+        return None, str(e)
+
+@app.route('/')
+def home():
+    # Отображение главной страницы
+    return render_template('index.html')
