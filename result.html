@@ -1,25 +1,114 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Результаты погоды</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Weather Analysis Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 28px;
+            color: #4CAF50;
+        }
+
+        .results-container {
+            display: flex;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-column {
+            flex: 1;
+            margin: 0 10px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fefefe;
+        }
+
+        .results-column h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .results-column p {
+            margin: 10px 0;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .results-column p strong {
+            color: #4CAF50;
+        }
+
+        .results-column h3 {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .results-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .results-column {
+                margin: 10px 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Погода на основе введённых координат</h1>
-        <p><strong>Широта:</strong> {{ latitude }}</p>
-        <p><strong>Долгота:</strong> {{ longitude }}</p>
-
-        <h2>Данные о погоде:</h2>
-        <p><strong>Температура:</strong> {{ temperature }} °C</p>
-        <p><strong>Влажность:</strong> {{ humidity }} %</p>
-        <p><strong>Скорость ветра:</strong> {{ wind_speed }} км/ч</p>
-        <p><strong>Вероятность дождя:</strong> {{ precipitation }} %</p>
-
-        <br>
-        <a href="{{ url_for('index') }}">Вернуться на главную страницу</a>
+    <h1>Weather Analysis Result</h1>
+    <div class="results-container">
+        <!-- Колонка Start City -->
+        <div class="results-column">
+            <h2>Start City: {{ start_city }}</h2>
+            <p><strong>Weather:</strong> {{ start_weather.weather_text }}</p>
+            <p><strong>Temperature:</strong> {{ start_weather.temperature_celsius }}°C</p>
+            <p><strong>Humidity:</strong> {{ start_weather.humidity }}%</p>
+            <p><strong>Wind Speed:</strong> {{ start_weather.wind_speed_kmh }} km/h</p>
+            <p><strong>Precipitation Probability (1 Hour):</strong> {{ start_precipitation_probability }}%</p>
+            <p><strong>Analysis:</strong> {{ start_analysis }}</p>
+            <h3>Forecast (1 Day):</h3>
+            <p><strong>Date:</strong> {{ start_forecast.date }}</p>
+            <p><strong>Average Temp:</strong> {{ start_forecast.avg_temp }}°C</p>
+            <p><strong>Day:</strong> {{ start_forecast.day_text }}</p>
+            <p><strong>Night:</strong> {{ start_forecast.night_text }}</p>
+            <p><strong>Analysis:</strong> {{ start_forecast.analysis }}</p>
+        </div>
+        <!-- Колонка End City -->
+        <div class="results-column">
+            <h2>End City: {{ end_city }}</h2>
+            <p><strong>Weather:</strong> {{ end_weather.weather_text }}</p>
+            <p><strong>Temperature:</strong> {{ end_weather.temperature_celsius }}°C</p>
+            <p><strong>Humidity:</strong> {{ end_weather.humidity }}%</p>
+            <p><strong>Wind Speed:</strong> {{ end_weather.wind_speed_kmh }} km/h</p>
+            <p><strong>Precipitation Probability (1 Hour):</strong> {{ end_precipitation_probability }}%</p>
+            <p><strong>Analysis:</strong> {{ end_analysis }}</p>
+            <h3>Forecast (7th Day):</h3>
+            <p><strong>Date:</strong> {{ end_forecast.date }}</p>
+            <p><strong>Average Temp:</strong> {{ end_forecast.avg_temp }}°C</p>
+            <p><strong>Day:</strong> {{ end_forecast.day_text }}</p>
+            <p><strong>Night:</strong> {{ end_forecast.night_text }}</p>
+            <p><strong>Analysis:</strong> {{ end_forecast.analysis }}</p>
+        </div>
     </div>
 </body>
 </html>
