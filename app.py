@@ -30,5 +30,7 @@ def get_weather(latitude, longitude):
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 400
 
+
+
 if name == 'main':
     app.run(debug=True)
