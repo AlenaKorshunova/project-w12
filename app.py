@@ -65,6 +65,12 @@ def precipitation_probability(location_key): #получаем вероятно�
         return None, str(e)
 
 def check_bad_weather(temperature, wind_speed, precipitation_probability, humidity):
+    temperature = weather_data.get("temperature_celsius")
+    wind_speed = weather_data.get("wind_speed_kmh")
+    humidity = weather_data.get("humidity")
+    weather_text = weather_data.get("weather_text", "").lower()
+    precipitation_probability = weather_data.get("PrecipitationProbability", 0)
+    
     if temperature > 25:
         return "там слишком жарко, сиди дома и ешь мороженое"
     if temperature < -10:
